@@ -36,8 +36,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DIJ\\Langfuse\\": "src/",
-            "DIJ\\Langfuse\\Database\\Factories\\": "database/factories/"
+            "DIJ\\Langfuse\\Laravel\\": "src/"
         }
     },
     "autoload-dev": {

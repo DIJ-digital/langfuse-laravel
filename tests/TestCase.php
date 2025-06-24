@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DIJ\Langfuse\Tests;
 
-use DIJ\Langfuse\LangfuseServiceProvider;
+use DIJ\Langfuse\Laravel\LangfuseServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -16,7 +16,7 @@ class TestCase extends Orchestra
 
         Factory::guessFactoryNamesUsing(
             /** @param class-string $modelName */
-            fn (string $modelName): string => 'DIJ\\Langfuse\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName): string => 'DIJ\\Langfuse\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 

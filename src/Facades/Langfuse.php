@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DIJ\Langfuse\Facades;
+namespace DIJ\Langfuse\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -13,6 +13,6 @@ class Langfuse extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \DIJ\Langfuse\Langfuse::class;
+        return 'langfuse';
     }
 }
