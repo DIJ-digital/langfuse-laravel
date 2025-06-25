@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace DIJ\Langfuse\Laravel;
 
-use DIJ\Langfuse\Langfuse;
-use DIJ\Langfuse\Transporters\HttpTransporter;
+use DIJ\Langfuse\PHP\Contracts\TransporterInterface;
+use DIJ\Langfuse\PHP\Langfuse;
+use DIJ\Langfuse\PHP\Transporters\HttpTransporter;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Http;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -15,15 +17,14 @@ class LangfuseServiceProvider extends PackageServiceProvider
 {
     public function registeringPackage(): void
     {
-        $this->app->singleton(Langfuse::class, static fn (): Langfuse => new Langfuse(
-            new HttpTransporter(
-                Http::baseUrl(Config::string('langfuse-laravel.base_url'))
-                    ->withBasicAuth(Config::string('langfuse-laravel.public_key'), Config::string('langfuse-laravel.secret_key'))
-                    ->buildClient()
-            )
-        ));
+        $this->app->singleton(ClientInterface::class, function ($app): ClientInterface {
+            return new Client([
+                'base_uri' => Config::get('langfuse-laravel.base_uri'),
+                'auth' => [Config::get('langfuse-laravel.public_key'), Config::get('langfuse-laravel.secret_key')],
+            ]);
+        });
 
-        $this->app->alias(Langfuse::class, 'langfuse');
+        $this->app->bind('langfuse', fn() => new Langfuse($this->app->make(HttpTransporter::class)));
     }
 
     public function configurePackage(Package $package): void
