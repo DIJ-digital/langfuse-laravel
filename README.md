@@ -1,84 +1,47 @@
-# This is my package langfuse-laravel
+## Langfuse PHP - A Laravel Facade for the PHP Langfuse API package.
+This package provides a wrapper around the [langfuse-php](https://github.com/DIJ-digital/langfuse-php) package, allowing you to easily integrate Langfuse into your Laravel applications. It uses as few dependencies as possible.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dij-digital/langfuse-laravel.svg?style=flat-square)](https://packagist.org/packages/dij-digital/langfuse-laravel)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dij-digital/langfuse-laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/dij-digital/langfuse-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/dij-digital/langfuse-laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/dij-digital/langfuse-laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/dij-digital/langfuse-laravel.svg?style=flat-square)](https://packagist.org/packages/dij-digital/langfuse-laravel)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+### It supports the following features:
+- Getting a text prompt
+- Getting a chat prompt
+- Compiling a text prompt
+- Compiling a chat prompt
+- Create a text prompt
+- Create a chat prompt
+- Fallbacks for prompt fetching when an error occurs
+- Fallbacks for prompt fetching when no prompt is found
 
-## Support us
+> **Requires [PHP 8.4](https://php.net/releases/)**
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/langfuse-laravel.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/langfuse-laravel)
+⚡️ Install the package using **Composer**:
+```bash  
+composer require dij/langfuse-laravel  
+```  
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+🤙 Modern codebase , refactoring and static analysis in one command
+```bash  
+composer codestyle  
+```  
+🚀 Run the entire test suite:
+```bash  
+composer test  
+```  
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require dij-digital/langfuse-laravel
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="langfuse-laravel-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="langfuse-laravel-config"
-```
-
-This is the contents of the published config file:
+### How to use this package
 
 ```php
-return [
-];
+use DIJ\Langfuse\Laravel\Facades\Langfuse;
+
+Langfuse::prompt()->text('promptName')->compile(['key' => 'value']);
+Langfuse::prompt()->text('promptName')->compile(['key' => 'value']);
+Langfuse::prompt()->chat('chatName')->compile(['key' => 'value']);
+Langfuse::prompt()->list();
+Langfuse::prompt()->create('promptName', 'text', PromptType::TEXT);
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="langfuse-laravel-views"
-```
-
-## Usage
-
-```php
-$langfuse = new DIJ\Langfuse();
-echo $langfuse->echoPhrase('Hello, DIJ!');
-```
-
-## Testing
-
-```bash
-composer test
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Tycho Engberink](https://github.com/tychoengberinkDIJ)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+**Langfuse Laravel** was created by **[Tycho Engberink](https://dij.digital)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
