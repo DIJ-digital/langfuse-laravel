@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DIJ\Langfuse\Laravel;
 
-use DIJ\Langfuse\PHP\Contracts\TransporterInterface;
 use DIJ\Langfuse\PHP\Langfuse;
 use DIJ\Langfuse\PHP\Transporters\HttpTransporter;
 use GuzzleHttp\Client;
@@ -17,14 +16,12 @@ class LangfuseServiceProvider extends PackageServiceProvider
 {
     public function registeringPackage(): void
     {
-        $this->app->singleton(ClientInterface::class, function ($app): ClientInterface {
-            return new Client([
-                'base_uri' => Config::get('langfuse-laravel.base_uri'),
-                'auth' => [Config::get('langfuse-laravel.public_key'), Config::get('langfuse-laravel.secret_key')],
-            ]);
-        });
+        $this->app->singleton(ClientInterface::class, fn ($app): ClientInterface => new Client([
+            'base_uri' => Config::get('langfuse-laravel.base_uri'),
+            'auth' => [Config::get('langfuse-laravel.public_key'), Config::get('langfuse-laravel.secret_key')],
+        ]));
 
-        $this->app->bind('langfuse', fn() => new Langfuse($this->app->make(HttpTransporter::class)));
+        $this->app->bind('langfuse', fn () => new Langfuse($this->app->make(HttpTransporter::class)));
     }
 
     public function configurePackage(Package $package): void

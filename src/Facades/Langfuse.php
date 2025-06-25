@@ -14,7 +14,7 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DIJ\Langfuse\PHP\Langfuse
+ * @see BaseLangfuse
  *
  * @method static Prompt prompt()
  */
