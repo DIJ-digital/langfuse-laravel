@@ -21,7 +21,7 @@ class LangfuseServiceProvider extends PackageServiceProvider
             'auth' => [Config::get('langfuse-laravel.public_key'), Config::get('langfuse-laravel.secret_key')],
         ]));
 
-        $this->app->bind('langfuse', fn () => new Langfuse($this->app->make(HttpTransporter::class)));
+        $this->app->bind('langfuse', fn (): Langfuse => new Langfuse($this->app->make(HttpTransporter::class)));
     }
 
     public function configurePackage(Package $package): void
