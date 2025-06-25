@@ -33,6 +33,12 @@ composer test
 ```  
 
 ### How to use this package
+Add the following env keys to your projects `.env` file:
+```dotenv
+LANGFUSE_BASE_URI=https://cloud.langfuse.com
+LANGFUSE_PUBLIC_KEY=
+LANGFUSE_SECRET_KEY=
+```
 
 ```php
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
