@@ -20,7 +20,7 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 
 ⚡️ Install the package using **Composer**:
 ```bash  
-composer require dij/langfuse-laravel  
+composer require dij-digital/langfuse-laravel  
 ```  
 
 🤙 Modern codebase , refactoring and static analysis in one command
