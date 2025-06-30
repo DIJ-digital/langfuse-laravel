@@ -1,4 +1,4 @@
-## Langfuse PHP - A Laravel Facade for the PHP Langfuse API package.
+## Langfuse Laravel - A Laravel Facade for the PHP Langfuse API package.
 This package provides a wrapper around the [langfuse-php](https://github.com/DIJ-digital/langfuse-php) package, allowing you to easily integrate Langfuse into your Laravel applications. It uses as few dependencies as possible.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dij-digital/langfuse-laravel.svg?style=flat-square)](https://packagist.org/packages/dij-digital/langfuse-laravel)
@@ -16,7 +16,7 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 - Fallbacks for prompt fetching when an error occurs
 - Fallbacks for prompt fetching when no prompt is found
 
-> **Requires [PHP 8.4](https://php.net/releases/)**
+> **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x) **
 
 ⚡️ Install the package using **Composer**:
 ```bash  
@@ -43,9 +43,9 @@ LANGFUSE_SECRET_KEY=
 ```php
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
 
-Langfuse::prompt()->text('promptName')->compile(['key' => 'value']);
-Langfuse::prompt()->text('promptName')->compile(['key' => 'value']);
-Langfuse::prompt()->chat('chatName')->compile(['key' => 'value']);
+Langfuse::prompt()->text('promptName', 'fallback')->compile(['key' => 'value']);
+Langfuse::prompt()->text('promptName', 'fallback')->compile(['key' => 'value']);
+Langfuse::prompt()->chat('chatName', ['role' => 'user', 'content' => 'fallback'])->compile(['key' => 'value']);
 Langfuse::prompt()->list();
 Langfuse::prompt()->create('promptName', 'text', PromptType::TEXT);
 ```
