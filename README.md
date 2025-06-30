@@ -16,7 +16,7 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 - Fallbacks for prompt fetching when an error occurs
 - Fallbacks for prompt fetching when no prompt is found
 
-> **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x) **
+> **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x)**
 
 ⚡️ Install the package using **Composer**:
 ```bash  
