@@ -47,17 +47,21 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "@php vendor/bin/pint --config https://raw.githubusercontent.com/DIJ-digital/pint-config/main/pint.json",
-        "refactor": "vendor/bin/rector",
+        "lint": "pint",
+        "refactor": "rector",
         "codestyle": [
-            "@format",
-            "@refactor",
-            "@analyse"
+            "@lint",
+            "@refactor"
+        ],
+        "test:lint": "@php vendor/bin/pint --config https://raw.githubusercontent.com/DIJ-digital/pint-config/main/pint.json",
+        "test:unit": "pest",
+        "test:types": "phpstan",
+        "test:refactor": "rector --dry-run",
+        "test": [
+            "@test:refactor",
+            "@test:lint",
+            "@test:types",
+            "@test:unit"
         ]
     },
     "config": {
