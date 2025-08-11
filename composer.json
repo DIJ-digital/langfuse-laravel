@@ -55,7 +55,8 @@
         "refactor": "rector",
         "codestyle": [
             "@lint",
-            "@refactor"
+            "@refactor",
+            "@analyse"
         ],
         "test:lint": "@php vendor/bin/pint --config https://raw.githubusercontent.com/DIJ-digital/pint-config/main/pint.json",
         "test:unit": "pest",
