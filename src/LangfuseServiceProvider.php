@@ -28,7 +28,7 @@ class LangfuseServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(Langfuse::class, fn (): Langfuse => new Langfuse(
             transporter: $this->app->make(HttpTransporter::class),
-            environment: Config::get('langfuse-laravel.environment') ?? Config::get('app.env', 'default'),
+            environment: Config::string('langfuse-laravel.environment', Config::string('app.env', 'default')),
         ));
 
         $this->app->alias(Langfuse::class, 'langfuse');
