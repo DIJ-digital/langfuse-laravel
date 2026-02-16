@@ -7,6 +7,6 @@ return [
     'public_key' => env('LANGFUSE_PUBLIC_KEY'),
     'secret_key' => env('LANGFUSE_SECRET_KEY'),
 
-    'service_name' => env('LANGFUSE_SERVICE_NAME'),
-    'environment' => env('LANGFUSE_ENVIRONMENT'),
+    'service_name' => env('LANGFUSE_SERVICE_NAME', env('APP_NAME', 'laravel')),
+    'environment' => env('LANGFUSE_ENVIRONMENT', env('APP_ENV', 'default')),
 ];
