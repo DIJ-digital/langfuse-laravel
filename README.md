@@ -1,4 +1,5 @@
 ## Langfuse Laravel - A Laravel Facade for the PHP Langfuse API package.
+
 This package provides a wrapper around the [langfuse-php](https://github.com/DIJ-digital/langfuse-php) package, allowing you to easily integrate Langfuse into your Laravel applications. It uses as few dependencies as possible.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dij-digital/langfuse-laravel.svg?style=flat-square)](https://packagist.org/packages/dij-digital/langfuse-laravel)
@@ -7,10 +8,10 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 [![Total Downloads](https://img.shields.io/packagist/dt/dij-digital/langfuse-laravel.svg?style=flat-square)](https://packagist.org/packages/dij-digital/langfuse-laravel)
 
 ### Features
-- **Tracing** - Create traces, spans and generations with a buffer-then-flush approach
+
+- **Tracing** - Create traces, spans and generations that send directly to the Langfuse API
 - **Prompts** - Fetch, compile and create text and chat prompts with fallback support
-- Automatic flush via a `terminating` callback in the service provider
-- Facade with direct access to ingestion methods
+- Facade with direct access to `prompt()` and `ingestion()` methods
 
 > **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x)**
 
@@ -29,8 +30,7 @@ LANGFUSE_BASE_URI=https://cloud.langfuse.com
 LANGFUSE_PUBLIC_KEY=
 LANGFUSE_SECRET_KEY=
 
-# Optional - defaults to config('app.name') and config('app.env')
-LANGFUSE_SERVICE_NAME=
+# Optional - defaults to config('app.env')
 LANGFUSE_ENVIRONMENT=
 ```
 
@@ -44,13 +44,13 @@ php artisan vendor:publish --tag=langfuse-laravel-config
 
 #### Tracing
 
-Everything is buffered in memory until `flush()` is called. The package automatically flushes at the end of each request via a `terminating` callback registered in the service provider.
+Every call sends directly to the Langfuse API. No buffering, no flushing.
 
 ```php
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
 
-// Create a trace — returns a Trace object
-$trace = Langfuse::trace(name: 'handle-request', userId: 'user-1', input: 'hello');
+// Create a trace
+$trace = Langfuse::ingestion()->trace(name: 'handle-request', userId: 'user-1', input: 'hello');
 
 // Nest spans and generations under the trace
 $span = $trace->span(name: 'search');
@@ -61,18 +61,9 @@ $generation = $span->generation(
     model: 'gpt-4o',
 );
 
-// Update any object in memory
-$trace->update(output: 'done');
-
-// Flush happens automatically at the end of the request.
-// To flush manually:
-Langfuse::flush();
-```
-
-You can also access the `Ingestion` instance directly:
-
-```php
-$ingestion = Langfuse::ingestion();
+// Update any object (sends immediately)
+$span->update(output: 'done', endTime: date('c'));
+$trace->update(output: 'final answer');
 ```
 
 #### Prompts
