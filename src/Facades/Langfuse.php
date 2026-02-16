@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Facade;
  * @see BaseLangfuse
  *
  * @method static Prompt prompt()
- * @method static Ingestion ingestion(string $environment = 'default')
+ * @method static Ingestion ingestion()
  */
 class Langfuse extends Facade
 {
