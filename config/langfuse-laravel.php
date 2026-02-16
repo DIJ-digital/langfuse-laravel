@@ -3,26 +3,46 @@
 declare(strict_types=1);
 
 return [
-    'base_uri' => env('LANGFUSE_BASE_URI', 'https://cloud.langfuse.com'),
-    'public_key' => env('LANGFUSE_PUBLIC_KEY'),
-    'secret_key' => env('LANGFUSE_SECRET_KEY'),
-
-    'service_name' => env('LANGFUSE_SERVICE_NAME', env('APP_NAME', 'laravel')),
-    'environment' => env('LANGFUSE_ENVIRONMENT', env('APP_ENV', 'default')),
 
     /*
     |--------------------------------------------------------------------------
-    | Telemetry Dispatch
+    | Langfuse API Base URI
     |--------------------------------------------------------------------------
     |
-    | When async is true, telemetry payloads are dispatched to a queue job
-    | instead of being sent synchronously. This prevents Langfuse latency
-    | from blocking your queue workers.
+    | The base URL for the Langfuse API. Defaults to the EU cloud instance.
+    | Change this if you use the US cloud (https://us.cloud.langfuse.com)
+    | or a self-hosted Langfuse instance.
     |
     */
 
-    'async' => env('LANGFUSE_ASYNC', true),
-    'queue' => env('LANGFUSE_QUEUE', 'telemetry'),
+    'base_uri' => env('LANGFUSE_BASE_URI', 'https://cloud.langfuse.com'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | API Keys
+    |--------------------------------------------------------------------------
+    |
+    | Authentication credentials for the Langfuse API. These are available
+    | in your Langfuse project settings under "API Keys". The public key
+    | is used as the Basic Auth username, the secret key as the password.
+    |
+    */
+
+    'public_key' => env('LANGFUSE_PUBLIC_KEY'),
+    'secret_key' => env('LANGFUSE_SECRET_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Environment
+    |--------------------------------------------------------------------------
+    |
+    | The environment label attached to all traces and observations.
+    | This allows you to separate data from different deployment
+    | contexts (e.g. production, staging, local) in Langfuse.
+    |
+    */
+
+    'environment' => env('LANGFUSE_ENVIRONMENT', env('APP_ENV', 'default')),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +50,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Timeouts (in seconds) for the Guzzle HTTP client used to communicate
-    | with the Langfuse API.
+    | with the Langfuse API. Increase these if you experience timeout
+    | issues on slow networks.
     |
     */
 

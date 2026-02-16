@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DIJ\Langfuse\Laravel\Facades;
 
-use DIJ\Langfuse\Laravel\LangfuseDecorator;
 use DIJ\Langfuse\PHP\Ingestion;
+use DIJ\Langfuse\PHP\Langfuse as BaseLangfuse;
 use DIJ\Langfuse\PHP\Prompt;
 use DIJ\Langfuse\PHP\Transporters\HttpTransporter;
 use GuzzleHttp\Client;
@@ -15,24 +15,23 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see LangfuseDecorator
+ * @see BaseLangfuse
  *
  * @method static Prompt prompt()
  * @method static Ingestion ingestion(string $environment = 'default')
- * @method static void flush()
  */
 class Langfuse extends Facade
 {
     /**
      * @param array<int, Response> $responses
      */
-    public static function fake(array $responses = []): LangfuseDecorator
+    public static function fake(array $responses = []): BaseLangfuse
     {
         $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(['handler' => $handlerStack]);
 
-        $langfuse = new LangfuseDecorator(new HttpTransporter($client));
+        $langfuse = new BaseLangfuse(new HttpTransporter($client));
 
         self::swap($langfuse);
 

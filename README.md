@@ -9,11 +9,9 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 
 ### Features
 
-- **Tracing** - Create traces, spans and generations with a buffer-then-flush approach
-- **Prompts** - Fetch, compile, create, list and update prompts with fallback support
-- Automatic flush via a `terminating` callback in the service provider
-- Singleton `Ingestion` instance per request (via `LangfuseDecorator`)
-- Facade with `fake()` for testing
+- **Tracing** - Create traces, spans and generations that send directly to the Langfuse API
+- **Prompts** - Fetch, compile and create text and chat prompts with fallback support
+- Facade with direct access to `prompt()` and `ingestion()` methods
 
 > **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x)**
 
@@ -32,8 +30,7 @@ LANGFUSE_BASE_URI=https://cloud.langfuse.com
 LANGFUSE_PUBLIC_KEY=
 LANGFUSE_SECRET_KEY=
 
-# Optional - defaults to config('app.name') and config('app.env')
-LANGFUSE_SERVICE_NAME=
+# Optional - defaults to config('app.env')
 LANGFUSE_ENVIRONMENT=
 ```
 
@@ -47,12 +44,12 @@ php artisan vendor:publish --tag=langfuse-laravel-config
 
 #### Tracing
 
-Everything is buffered in memory until `flush()` is called. The package automatically flushes at the end of each request via a `terminating` callback registered in the service provider.
+Every call sends directly to the Langfuse API. No buffering, no flushing.
 
 ```php
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
 
-// Create a trace — returns a Trace object
+// Create a trace
 $trace = Langfuse::ingestion()->trace(name: 'handle-request', userId: 'user-1', input: 'hello');
 
 // Nest spans and generations under the trace
@@ -64,15 +61,10 @@ $generation = $span->generation(
     model: 'gpt-4o',
 );
 
-// Update any object in memory
-$trace->update(output: 'done');
-
-// Flush happens automatically at the end of the request.
-// To flush manually:
-Langfuse::flush();
+// Update any object (sends immediately)
+$span->update(output: 'done', endTime: date('c'));
+$trace->update(output: 'final answer');
 ```
-
-The `Ingestion` instance is a singleton per request — calling `Langfuse::ingestion()` multiple times returns the same instance, so all spans and traces are flushed together.
 
 #### Prompts
 

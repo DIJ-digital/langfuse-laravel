@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
-use DIJ\Langfuse\Laravel\LangfuseDecorator;
+use DIJ\Langfuse\PHP\Langfuse as BaseLangfuse;
 use DIJ\Langfuse\PHP\Responses\TextPromptResponse;
 use DIJ\Langfuse\PHP\Testing\Responses\GetPromptResponse;
 
@@ -25,8 +25,8 @@ it('can use a fake to get a prompt response', function (): void {
     expect($prompt)->toBeInstanceOf(TextPromptResponse::class);
 });
 
-it('returns a LangfuseDecorator instance from fake', function (): void {
+it('returns a Langfuse instance from fake', function (): void {
     $manager = Langfuse::fake();
 
-    expect($manager)->toBeInstanceOf(LangfuseDecorator::class);
+    expect($manager)->toBeInstanceOf(BaseLangfuse::class);
 });
