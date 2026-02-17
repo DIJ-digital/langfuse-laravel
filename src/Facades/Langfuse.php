@@ -7,6 +7,7 @@ namespace DIJ\Langfuse\Laravel\Facades;
 use DIJ\Langfuse\PHP\Ingestion;
 use DIJ\Langfuse\PHP\Langfuse as BaseLangfuse;
 use DIJ\Langfuse\PHP\Prompt;
+use DIJ\Langfuse\PHP\Score;
 use DIJ\Langfuse\PHP\Transporters\HttpTransporter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static Prompt prompt()
  * @method static Ingestion ingestion()
+ * @method static Score score()
  */
 class Langfuse extends Facade
 {
