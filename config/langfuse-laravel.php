@@ -46,6 +46,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Label
+    |--------------------------------------------------------------------------
+    |
+    | The default label used when fetching prompts. This allows you to
+    | separate prompts for different environments (e.g. production,
+    | acceptance, local). Defaults to the application environment.
+    |
+    */
+
+    'default_label' => env('LANGFUSE_DEFAULT_LABEL', env('APP_ENV', 'latest')),
+
+    /*
+    |--------------------------------------------------------------------------
     | HTTP Timeouts
     |--------------------------------------------------------------------------
     |
