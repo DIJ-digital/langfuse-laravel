@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
+use DIJ\Langfuse\PHP\Langfuse as BaseLangfuse;
 use DIJ\Langfuse\PHP\Responses\TextPromptResponse;
 use DIJ\Langfuse\PHP\Testing\Responses\GetPromptResponse;
 
 use function Pest\Faker\fake;
 
-it('can use a fake to get a response', function (): void {
+it('can use a fake to get a prompt response', function (): void {
     $promptName = fake()->name();
     $prompt = fake()->sentence();
 
@@ -22,4 +23,10 @@ it('can use a fake to get a response', function (): void {
 
     $prompt = Langfuse::prompt()->text($promptName);
     expect($prompt)->toBeInstanceOf(TextPromptResponse::class);
+});
+
+it('returns a Langfuse instance from fake', function (): void {
+    $manager = Langfuse::fake();
+
+    expect($manager)->toBeInstanceOf(BaseLangfuse::class);
 });

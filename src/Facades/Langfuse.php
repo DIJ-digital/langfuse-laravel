@@ -7,6 +7,7 @@ namespace DIJ\Langfuse\Laravel\Facades;
 use DIJ\Langfuse\PHP\Ingestion;
 use DIJ\Langfuse\PHP\Langfuse as BaseLangfuse;
 use DIJ\Langfuse\PHP\Prompt;
+use DIJ\Langfuse\PHP\Score;
 use DIJ\Langfuse\PHP\Transporters\HttpTransporter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -19,14 +20,10 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static Prompt prompt()
  * @method static Ingestion ingestion(string $environment = 'default')
+ * @method static Score score()
  */
 class Langfuse extends Facade
 {
-    protected static function getFacadeAccessor(): string
-    {
-        return 'langfuse';
-    }
-
     /**
      * @param array<int, Response> $responses
      */
@@ -36,9 +33,15 @@ class Langfuse extends Facade
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(['handler' => $handlerStack]);
 
-        $fake = new BaseLangfuse(new HttpTransporter($client));
-        self::swap($fake);
+        $langfuse = new BaseLangfuse(new HttpTransporter($client));
 
-        return $fake;
+        self::swap($langfuse);
+
+        return $langfuse;
+    }
+
+    protected static function getFacadeAccessor(): string
+    {
+        return 'langfuse';
     }
 }
