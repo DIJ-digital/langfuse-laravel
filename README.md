@@ -125,5 +125,34 @@ Responses are consumed sequentially (Guzzle `MockHandler`), so the order of resp
 composer test        # Run tests
 composer codestyle   # Format, refactor and analyse
 ```
+#### Ingestion
+```php
+use DIJ\Langfuse\Laravel\Facades\Langfuse;
 
-**Langfuse Laravel** was created by **[Tycho Engberink](https://dij.digital)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
+// Creates a trace and a generation visible in Langfuse UI
+$traceId = 'trace-id-123';
+
+Langfuse::ingestion()->trace(
+    input: 'prompt text',
+    output: null,
+    traceId: $traceId,
+    name: 'name',
+    sessionId: null,
+    metadata: ['key' => 'value']
+);
+
+Langfuse::ingestion()->generation(
+    input: 'prompt text',
+    output: 'model output',
+    traceId: $traceId,
+    name: 'name',
+    sessionId: null,
+    promptName: 'promptName',
+    promptVersion: 1,
+    model: 'gpt-4o',
+    modelParameters: ['temperature' => 0.7],
+    metadata: ['key' => 'value']
+);
+```
+
+**Langfuse Laravel** was created by **[Tycho Engberink](https://github.com/tychoengberinkDIJ)** and is maintained by **[DIJ Digital](https://dij.digital)** under the **[MIT license](https://opensource.org/licenses/MIT)**.

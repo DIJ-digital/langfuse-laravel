@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Facade;
  * @see BaseLangfuse
  *
  * @method static Prompt prompt()
- * @method static Ingestion ingestion()
+ * @method static Ingestion ingestion(string $environment = 'default')
  * @method static Score score()
  */
 class Langfuse extends Facade
