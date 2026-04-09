@@ -14,5 +14,6 @@ class AgentPrompted
         public string $invocationId,
         public AgentPrompt $prompt,
         public StreamedAgentResponse|AgentResponse $response,
-    ) {}
+    ) {
+    }
 }

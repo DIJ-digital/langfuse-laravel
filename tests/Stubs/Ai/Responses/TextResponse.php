@@ -13,5 +13,6 @@ class TextResponse
         public string $text,
         public Usage $usage,
         public Meta $meta,
-    ) {}
+    ) {
+    }
 }

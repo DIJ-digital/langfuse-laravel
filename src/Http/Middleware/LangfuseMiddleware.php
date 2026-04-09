@@ -15,7 +15,8 @@ class LangfuseMiddleware
     public function __construct(
         private readonly Langfuse $langfuse,
         private readonly TraceContext $traceContext,
-    ) {}
+    ) {
+    }
 
     public function handle(Request $request, Closure $next): Response
     {

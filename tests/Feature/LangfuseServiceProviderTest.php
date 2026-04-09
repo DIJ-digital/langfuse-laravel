@@ -33,8 +33,8 @@ it('binds TraceContext as scoped', function (): void {
 });
 
 it('registers the langfuse middleware alias', function (): void {
-    /** @var \Illuminate\Routing\Router $router */
-    $router = $this->app->make(\Illuminate\Routing\Router::class);
+    /** @var Illuminate\Routing\Router $router */
+    $router = $this->app->make(Illuminate\Routing\Router::class);
 
     expect($router->getMiddleware())->toHaveKey('langfuse');
 });

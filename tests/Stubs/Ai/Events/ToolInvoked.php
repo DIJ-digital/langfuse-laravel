@@ -16,5 +16,6 @@ class ToolInvoked
         public Tool $tool,
         public array $arguments,
         public mixed $result,
-    ) {}
+    ) {
+    }
 }

@@ -31,7 +31,7 @@ it('uses route name when available', function (): void {
     $middleware = app(LangfuseMiddleware::class);
     $request = Request::create('/api/chat', 'POST');
 
-    $route = new \Illuminate\Routing\Route('POST', '/api/chat', fn () => 'ok');
+    $route = new Illuminate\Routing\Route('POST', '/api/chat', fn () => 'ok');
     $route->name('api.chat');
     $request->setRouteResolver(fn () => $route);
 
@@ -51,7 +51,7 @@ it('sets current trace on the trace context', function (): void {
 
     $trace = app(TraceContext::class)->currentTrace();
     expect($trace)->not->toBeNull()
-        ->and($trace)->toBeInstanceOf(\DIJ\Langfuse\PHP\Ingestion\Trace::class);
+        ->and($trace)->toBeInstanceOf(DIJ\Langfuse\PHP\Ingestion\Trace::class);
 });
 
 it('passes response through unchanged', function (): void {

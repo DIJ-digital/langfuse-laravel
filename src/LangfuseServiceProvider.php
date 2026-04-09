@@ -81,14 +81,12 @@ class LangfuseServiceProvider extends PackageServiceProvider
             return;
         }
 
-        $this->app->extend(\Prism\Prism\PrismManager::class, function (\Prism\Prism\PrismManager $manager) {
-            return new Prism\TracingPrismManager(
+        $this->app->extend(\Prism\Prism\PrismManager::class, fn (\Prism\Prism\PrismManager $manager) => new Prism\TracingPrismManager(
                 app: $this->app,
                 inner: $manager,
                 langfuse: $this->app->make(Langfuse::class),
                 traceContext: $this->app->make(TraceContext::class),
-            );
-        });
+            ));
     }
 
     /**

@@ -27,6 +27,7 @@ use Prism\Prism\Structured\Request as StructuredRequest;
 use Prism\Prism\Structured\Response as StructuredResponse;
 use Prism\Prism\Text\Request as TextRequest;
 use Prism\Prism\Text\Response as TextResponse;
+use Throwable;
 
 class TracingProvider extends Provider
 {
@@ -34,7 +35,8 @@ class TracingProvider extends Provider
         private readonly Provider $inner,
         private readonly Langfuse $langfuse,
         private readonly TraceContext $traceContext,
-    ) {}
+    ) {
+    }
 
     public function text(TextRequest $request): TextResponse
     {
@@ -49,7 +51,7 @@ class TracingProvider extends Provider
             );
 
             return $response;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->recordGenerationError($request, $e);
 
             throw $e;
@@ -69,7 +71,7 @@ class TracingProvider extends Provider
             );
 
             return $response;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->recordGenerationError($request, $e);
 
             throw $e;
@@ -83,7 +85,7 @@ class TracingProvider extends Provider
     {
         try {
             yield from $this->traceStream($request);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->recordGenerationError($request, $e);
 
             throw $e;
@@ -171,7 +173,7 @@ class TracingProvider extends Provider
 
     private function recordGenerationError(
         TextRequest|StructuredRequest $request,
-        \Throwable $e,
+        Throwable $e,
     ): void {
         $trace = $this->getOrCreateTrace($request, ['error' => $e->getMessage()]);
 
