@@ -120,7 +120,7 @@ class LaravelAiSubscriber
     private function getOrCreateTrace(PromptingAgent|AgentPrompted $event): Trace
     {
         return $this->resolveTrace($event->invocationId, [
-            'name' => 'laravel-ai-'.$this->getShortClassName($event->prompt->agent),
+            'name' => 'laravel-ai-' . $this->getShortClassName($event->prompt->agent),
             'input' => $event->prompt->prompt,
             'metadata' => [
                 'model' => $event->prompt->model,
@@ -132,7 +132,7 @@ class LaravelAiSubscriber
     private function getOrCreateTraceFromTool(InvokingTool $event): Trace
     {
         return $this->resolveTrace($event->invocationId, [
-            'name' => 'laravel-ai-'.$this->getShortClassName($event->agent),
+            'name' => 'laravel-ai-' . $this->getShortClassName($event->agent),
             'metadata' => [
                 'source' => 'laravel-ai-auto-instrumentation',
             ],
@@ -140,7 +140,7 @@ class LaravelAiSubscriber
     }
 
     /**
-     * @param  array{name: string, input?: string, metadata?: array<string, mixed>}  $params
+     * @param array{name: string, input?: string, metadata?: array<string, mixed>} $params
      */
     private function resolveTrace(string $invocationId, array $params): Trace
     {
