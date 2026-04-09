@@ -15,5 +15,6 @@ class InvokingTool
         public Agent $agent,
         public Tool $tool,
         public array $arguments,
-    ) {}
+    ) {
+    }
 }

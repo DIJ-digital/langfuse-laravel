@@ -33,7 +33,8 @@ class LaravelAiSubscriber
     public function __construct(
         private readonly Langfuse $langfuse,
         private readonly TraceContext $traceContext,
-    ) {}
+    ) {
+    }
 
     public function handlePromptingAgent(PromptingAgent $event): void
     {

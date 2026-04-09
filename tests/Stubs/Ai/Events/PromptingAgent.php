@@ -11,5 +11,6 @@ class PromptingAgent
     public function __construct(
         public string $invocationId,
         public AgentPrompt $prompt,
-    ) {}
+    ) {
+    }
 }

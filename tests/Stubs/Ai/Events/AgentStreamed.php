@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace Laravel\Ai\Events;
 
-class AgentStreamed extends AgentPrompted {}
+class AgentStreamed extends AgentPrompted
+{
+}

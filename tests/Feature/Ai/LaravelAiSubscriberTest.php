@@ -29,17 +29,23 @@ function aiIngestionResponse(): Response
 
 function makeTestAgent(): Agent
 {
-    return new class implements Agent {};
+    return new class implements Agent
+    {
+    };
 }
 
 function makeTestProvider(): TextProvider
 {
-    return new class implements TextProvider {};
+    return new class implements TextProvider
+    {
+    };
 }
 
 function makeTestTool(): Tool
 {
-    return new class implements Tool {};
+    return new class implements Tool
+    {
+    };
 }
 
 function makeAgentPrompt(string $model = 'gpt-4', ?Agent $agent = null): AgentPrompt

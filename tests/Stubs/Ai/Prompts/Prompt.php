@@ -12,5 +12,6 @@ abstract class Prompt
         public readonly string $prompt,
         public readonly TextProvider $provider,
         public readonly string $model,
-    ) {}
+    ) {
+    }
 }
