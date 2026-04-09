@@ -13,7 +13,14 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 - **Prompts** - Fetch, compile and create text and chat prompts with fallback support
 - Facade with direct access to `prompt()` and `ingestion()` methods
 
-> **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x)**
+> **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x), [Laravel 12](https://laravel.com/docs/12.x) or [Laravel 13](https://laravel.com/docs/13.x)**
+
+### Supported versions
+
+| PHP | Laravel |
+|-----|---------|
+| 8.3 | 11, 12, 13 |
+| 8.4 | 11, 12, 13 |
 
 ### Installation
 
@@ -118,6 +125,59 @@ Available test response helpers in `DIJ\Langfuse\PHP\Testing\Responses`:
 - `GetPromptListPageTwoResponse` — second page of prompt list
 
 Responses are consumed sequentially (Guzzle `MockHandler`), so the order of responses must match the order of HTTP calls your code makes.
+
+### Roadmap
+
+#### HTTP Middleware (auto-tracing)
+
+A middleware that automatically creates a root Langfuse trace for each HTTP request. This trace becomes the parent for any AI calls made during the request, providing a full request-level view in Langfuse.
+
+The middleware captures:
+- Route name (or `METHOD /path` as fallback)
+- Authenticated user ID
+- HTTP method and full URL
+
+```php
+// Apply to routes or groups
+Route::middleware('langfuse')->group(function () {
+    // All AI calls within these routes are automatically traced
+});
+```
+
+#### Prism auto-tracing
+
+Automatic tracing for [Prism](https://prismphp.com/) AI calls using the decorator pattern. Since Prism does not dispatch Laravel events, the `PrismManager` is extended to wrap each provider in a tracing layer that intercepts `text()`, `structured()` and `stream()` calls.
+
+Captured data:
+- Input prompts and system prompts
+- Model name, provider and parameters (temperature, maxTokens, topP)
+- Output text/structured response
+- Token usage (prompt + completion)
+- Timing (start/end)
+- Errors with status messages
+
+Enable via config:
+```dotenv
+LANGFUSE_PRISM_ENABLED=true
+```
+
+#### Laravel AI auto-tracing
+
+Automatic tracing for [Laravel AI](https://laravel.com/docs/ai) using its built-in event system. An event subscriber listens for agent and tool events, creating generations and spans automatically.
+
+| Event | Action |
+|-------|--------|
+| `PromptingAgent` / `StreamingAgent` | Start trace + record timing |
+| `AgentPrompted` / `AgentStreamed` | Create generation with response, usage, model info |
+| `InvokingTool` | Create child span for tool execution |
+| `ToolInvoked` | End span with tool result |
+
+Events are correlated using Laravel AI's `invocationId`.
+
+Enable via config:
+```dotenv
+LANGFUSE_LARAVEL_AI_ENABLED=true
+```
 
 ### Development
 

@@ -37,6 +37,11 @@ class Langfuse extends Facade
 
         self::swap($langfuse);
 
+        // Also bind the fake instance on the class key so that
+        // constructor-injected dependencies (middleware, subscribers)
+        // receive the mocked instance instead of the real one.
+        app()->instance(BaseLangfuse::class, $langfuse);
+
         return $langfuse;
     }
 

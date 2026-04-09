@@ -70,4 +70,33 @@ return [
 
     'connect_timeout' => (int) env('LANGFUSE_CONNECT_TIMEOUT', 5),
     'timeout' => (int) env('LANGFUSE_TIMEOUT', 10),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prism Auto-Tracing
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, all Prism AI provider calls are automatically traced
+    | in Langfuse. This wraps the PrismManager to intercept text(),
+    | structured() and stream() calls with tracing instrumentation.
+    |
+    | Prism tracing is also automatically enabled when Laravel AI
+    | auto-tracing is enabled, since Laravel AI uses Prism under the hood.
+    |
+    */
+
+    'prism_enabled' => (bool) env('LANGFUSE_PRISM_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel AI Auto-Tracing
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, Laravel AI agent and tool events are automatically
+    | traced in Langfuse. An event subscriber listens for agent prompts,
+    | responses and tool invocations, creating traces and generations.
+    |
+    */
+
+    'laravel_ai_enabled' => (bool) env('LANGFUSE_LARAVEL_AI_ENABLED', false),
 ];

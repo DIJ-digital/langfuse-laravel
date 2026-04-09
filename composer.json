@@ -43,7 +43,8 @@
     "autoload-dev": {
         "psr-4": {
             "DIJ\\Langfuse\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Workbench\\App\\": "workbench/app/",
+            "Laravel\\Ai\\": "tests/Stubs/Ai/"
         }
     },
     "scripts": {
@@ -85,6 +86,10 @@
                 "Langfuse": "DIJ\\Langfuse\\Laravel\\Facades\\Langfuse"
             }
         }
+    },
+    "suggest": {
+        "prismphp/prism": "Required for Prism auto-tracing (^1.0)",
+        "laravel/boost": "AI-assisted development with Langfuse guidelines and skills"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
