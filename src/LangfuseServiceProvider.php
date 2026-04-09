@@ -81,7 +81,7 @@ class LangfuseServiceProvider extends PackageServiceProvider
             return;
         }
 
-        $this->app->extend(\Prism\Prism\PrismManager::class, function (\Prism\Prism\PrismManager $manager) {
+        $this->app->extend(\Prism\Prism\PrismManager::class, function (\Prism\Prism\PrismManager $manager) { /** @phpstan-ignore-line class.notFound (Prism is an optional dependency) */
             return new Prism\TracingPrismManager(
                 app: $this->app,
                 inner: $manager,

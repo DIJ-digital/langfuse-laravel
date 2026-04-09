@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use DIJ\Langfuse\Laravel\Facades\Langfuse;
 use DIJ\Langfuse\Laravel\Ai\LaravelAiSubscriber;
+use DIJ\Langfuse\Laravel\Facades\Langfuse;
 use DIJ\Langfuse\Laravel\Tracing\TraceContext;
 use DIJ\Langfuse\PHP\Ingestion\Trace;
 use GuzzleHttp\Psr7\Response;
@@ -29,17 +29,17 @@ function aiIngestionResponse(): Response
 
 function makeTestAgent(): Agent
 {
-    return new class () implements Agent {};
+    return new class implements Agent {};
 }
 
 function makeTestProvider(): TextProvider
 {
-    return new class () implements TextProvider {};
+    return new class implements TextProvider {};
 }
 
 function makeTestTool(): Tool
 {
-    return new class () implements Tool {};
+    return new class implements Tool {};
 }
 
 function makeAgentPrompt(string $model = 'gpt-4', ?Agent $agent = null): AgentPrompt

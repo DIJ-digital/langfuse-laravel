@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Facade;
 class Langfuse extends Facade
 {
     /**
-     * @param array<int, Response> $responses
+     * @param  array<int, Response>  $responses
      */
     public static function fake(array $responses = []): BaseLangfuse
     {

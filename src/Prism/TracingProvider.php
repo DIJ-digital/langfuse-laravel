@@ -188,7 +188,7 @@ class TracingProvider extends Provider
     }
 
     /**
-     * @param array<string, mixed> $extraMetadata
+     * @param  array<string, mixed>  $extraMetadata
      */
     private function getOrCreateTrace(
         TextRequest|StructuredRequest $request,
@@ -201,7 +201,7 @@ class TracingProvider extends Provider
         }
 
         $trace = $this->langfuse->ingestion()->trace(
-            name: 'prism-' . $request->model(),
+            name: 'prism-'.$request->model(),
             input: $this->extractInput($request),
             metadata: [
                 'provider' => $request->provider(),

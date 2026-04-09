@@ -24,7 +24,7 @@ class TracingPrismManager extends PrismManager
     }
 
     /**
-     * @param array<string, mixed> $providerConfig
+     * @param  array<string, mixed>  $providerConfig
      */
     public function resolve(ProviderEnum|string $name, array $providerConfig = []): Provider
     {

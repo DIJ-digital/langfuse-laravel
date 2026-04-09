@@ -70,9 +70,12 @@ class LaravelAiSubscriber
         $trace = $this->getOrCreateTraceFromTool($event);
         $toolName = $this->getShortClassName($event->tool);
 
+        /** @var array<string, mixed> $arguments */
+        $arguments = $event->arguments;
+
         $span = $trace->span(
             name: "tool-{$toolName}",
-            input: $event->arguments,
+            input: $arguments,
             startTime: Ingestion::now(),
         );
 
@@ -87,8 +90,11 @@ class LaravelAiSubscriber
             return;
         }
 
+        /** @var array<string, mixed>|string|null $output */
+        $output = $event->result;
+
         $span->update(
-            output: $event->result,
+            output: $output,
             endTime: Ingestion::now(),
         );
 
@@ -113,7 +119,7 @@ class LaravelAiSubscriber
     private function getOrCreateTrace(PromptingAgent|AgentPrompted $event): Trace
     {
         return $this->resolveTrace($event->invocationId, [
-            'name' => 'laravel-ai-' . $this->getShortClassName($event->prompt->agent),
+            'name' => 'laravel-ai-'.$this->getShortClassName($event->prompt->agent),
             'input' => $event->prompt->prompt,
             'metadata' => [
                 'model' => $event->prompt->model,
@@ -125,7 +131,7 @@ class LaravelAiSubscriber
     private function getOrCreateTraceFromTool(InvokingTool $event): Trace
     {
         return $this->resolveTrace($event->invocationId, [
-            'name' => 'laravel-ai-' . $this->getShortClassName($event->agent),
+            'name' => 'laravel-ai-'.$this->getShortClassName($event->agent),
             'metadata' => [
                 'source' => 'laravel-ai-auto-instrumentation',
             ],
@@ -133,7 +139,7 @@ class LaravelAiSubscriber
     }
 
     /**
-     * @param array<string, mixed> $params
+     * @param  array{name: string, input?: string, metadata?: array<string, mixed>}  $params
      */
     private function resolveTrace(string $invocationId, array $params): Trace
     {
@@ -149,10 +155,13 @@ class LaravelAiSubscriber
             return $existing;
         }
 
+        /** @var array<string, mixed>|null $metadata */
+        $metadata = $params['metadata'] ?? null;
+
         $trace = $this->langfuse->ingestion()->trace(
             name: $params['name'],
             input: $params['input'] ?? null,
-            metadata: $params['metadata'] ?? null,
+            metadata: $metadata,
         );
 
         $this->traceContext->setCurrentTrace($trace);

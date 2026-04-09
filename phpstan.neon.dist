@@ -5,6 +5,8 @@ parameters:
     level: max
     paths:
         - src
+    excludePaths:
+        - src/Prism
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true

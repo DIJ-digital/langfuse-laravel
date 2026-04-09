@@ -17,12 +17,15 @@ class LangfuseMiddleware
         private readonly TraceContext $traceContext,
     ) {}
 
+    /**
+     * @param  Closure(Request): Response  $next
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $authId = $request->user()?->getAuthIdentifier();
 
         $trace = $this->langfuse->ingestion()->trace(
-            name: $request->route()?->getName() ?? $request->method() . ' ' . $request->path(),
+            name: $request->route()?->getName() ?? $request->method().' '.$request->path(),
             userId: is_scalar($authId) ? (string) $authId : null,
             metadata: [
                 'method' => $request->method(),
