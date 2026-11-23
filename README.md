@@ -11,7 +11,7 @@ This package provides a wrapper around the [langfuse-php](https://github.com/DIJ
 
 - **Tracing** - Create traces, spans and generations that send directly to the Langfuse API
 - **Prompts** - Fetch, compile and create text and chat prompts with fallback support
-- Facade with direct access to `prompt()` and `ingestion()` methods
+- Facade with direct access to `prompt()`, `otelIngestion()`, `ingestion()` and `score()` methods
 
 > **Requires [PHP 8.3](https://php.net/releases/) or [PHP 8.4](https://php.net/releases/) in combination with [Laravel 11](https://laravel.com/docs/11.x) or [Laravel 12](https://laravel.com/docs/12.x)**
 
@@ -44,7 +44,26 @@ php artisan vendor:publish --tag=langfuse-laravel-config
 
 #### Tracing
 
-Every call sends directly to the Langfuse API. No buffering, no flushing.
+Langfuse Cloud only accepts traces through its OpenTelemetry endpoint since 2026-11-16. Use `otelIngestion()`: `trace()`, `span()` and `generation()` start an observation and `end()` exports it. The app name is sent as the OTel `service.name`.
+
+```php
+use DIJ\Langfuse\Laravel\Facades\Langfuse;
+
+$trace = Langfuse::otelIngestion()->trace(name: 'handle-request', userId: 'user-1', input: 'hello');
+
+$span = $trace->span(name: 'search');
+$generation = $span->generation(name: 'llm', input: 'prompt', model: 'gpt-4o');
+$generation->update(output: 'response');
+$generation->end();
+$span->end();
+
+$trace->update(output: 'final answer');
+$trace->end();
+```
+
+See the [langfuse-php README](https://github.com/DIJ-digital/langfuse-php#opentelemetry-ingestion) for all options.
+
+`ingestion()` still posts to the v2 ingestion API, for self-hosted instances that accept it. Every call sends directly to the Langfuse API:
 
 ```php
 use DIJ\Langfuse\Laravel\Facades\Langfuse;
@@ -118,6 +137,17 @@ Available test response helpers in `DIJ\Langfuse\PHP\Testing\Responses`:
 - `GetPromptListPageTwoResponse` — second page of prompt list
 
 Responses are consumed sequentially (Guzzle `MockHandler`), so the order of responses must match the order of HTTP calls your code makes.
+
+`Langfuse::recorded()` returns the requests sent since the last `fake()`, for example to assert on exported spans:
+
+```php
+Langfuse::fake([new Response(200)]);
+
+// run the code under test
+
+$body = json_decode((string) Langfuse::recorded()[0]->getBody(), true);
+$span = $body['resourceSpans'][0]['scopeSpans'][0]['spans'][0];
+```
 
 ### Development
 

@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.0] OpenTelemetry Ingestion - 2026-11-23
+
+### Added
+- **OpenTelemetry ingestion** — `Langfuse::otelIngestion()` from langfuse-php 0.3.0; Langfuse Cloud only accepts traces on its OTel endpoint since 2026-11-16
+- **Service name** — the app name is sent as the OTel `service.name`
+- **Recorded requests** — `Langfuse::recorded()` returns the requests sent since the last `Langfuse::fake()`
+
+### Changed
+- **langfuse-php ^0.3.0**
+- Facade docblock: `ingestion()` takes no arguments (matches langfuse-php since 0.2.0)
+- Rector config: removed the `strictBooleans` set, which Rector 2.x no longer has
+
 ## [0.2.0] Scores, Ingestion Rewrite & Prompt Enhancements - 2026-02-19
 
 ### Added
