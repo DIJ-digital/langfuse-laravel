@@ -40,12 +40,12 @@ it('starts every fake with an empty recording', function (): void {
     expect(Langfuse::recorded())->toBe([]);
 });
 
-it('uses the app name as the OTel service name', function (): void {
+it('uses the app name as the OTel service name', function (mixed $appName, string $serviceName): void {
     $history = [];
     $handlerStack = HandlerStack::create(new MockHandler([new Response(200)]));
     $handlerStack->push(Middleware::history($history));
 
-    config()->set('app.name', 'screening');
+    config()->set('app.name', $appName);
     app()->instance(ClientInterface::class, new Client(['handler' => $handlerStack]));
     app()->forgetInstance(BaseLangfuse::class);
 
@@ -57,5 +57,10 @@ it('uses the app name as the OTel service name', function (): void {
     /** @var array{resourceSpans: list<array{resource: array{attributes: list<array{key: string, value: array{stringValue: string}}>}}>} $payload */
     $payload = json_decode((string) $entry['request']->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
-    expect($payload['resourceSpans'][0]['resource']['attributes'])->toBe([['key' => 'service.name', 'value' => ['stringValue' => 'screening']]]);
-});
+    expect($payload['resourceSpans'][0]['resource']['attributes'])->toBe([['key' => 'service.name', 'value' => ['stringValue' => $serviceName]]]);
+})->with([
+    'app name' => ['screening', 'screening'],
+    'null' => [null, 'unknown_service:php'],
+    'empty' => ['', 'unknown_service:php'],
+    'not a string' => [['screening'], 'unknown_service:php'],
+]);

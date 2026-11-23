@@ -31,10 +31,17 @@ class LangfuseServiceProvider extends PackageServiceProvider
             transporter: $app->make(HttpTransporter::class),
             environment: Config::string('langfuse-laravel.environment'),
             label: Config::string('langfuse-laravel.default_label'),
-            serviceName: Config::string('app.name', 'unknown_service:php'),
+            serviceName: $this->serviceName(),
         ));
 
         $this->app->alias(Langfuse::class, 'langfuse');
+    }
+
+    private function serviceName(): string
+    {
+        $name = Config::get('app.name');
+
+        return is_string($name) && $name !== '' ? $name : 'unknown_service:php';
     }
 
     public function configurePackage(Package $package): void
